@@ -8,7 +8,10 @@
 import util from '@/libs/util.js'
 import { AccountLogin } from '@/api/sys/login'
 // import setFetchPermission from '@/router/index.js'
-
+import { Message } from 'element-ui'
+// import util from '@/libs/util'
+// import loading from '@/libs/loading'
+// import message from '@/libs/message'
 export default {
   namespaced: true,
   actions: {
@@ -43,7 +46,6 @@ export default {
           // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复
           // token 代表用户当前登录状态 建议在网络请求中携带 token
           // 如有必要 token 需要定时更新，默认保存一天
-          
           // setTimeout(() => {
           //   location.reload()
           // }, 1000);
@@ -63,7 +65,11 @@ export default {
           util.cookies.remove('redirect')
         })
         .catch(err => {
-          console.log('err: ', err)
+          Message({
+            message: err,
+            type: "error",
+            duration: 2*1000
+          });
           vm.changeImgCode();
         })
     },

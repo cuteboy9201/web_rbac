@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" @open="dialogOpen">
+  <el-dialog  :visible.sync="dialogVisible" @open="dialogOpen">
     <div slot="title">维护
       <el-tag>{{role.name}}</el-tag>用户</div>
     <el-form :inline="true" :model="searchForm" ref="searchForm" size="mini" style="margin-bottom: -18px;">

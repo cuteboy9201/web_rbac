@@ -128,13 +128,14 @@ export default {
           // 登录表单校验失败
           this.$message.error("表单校验失败");
         }
+        
       });
     },
     changeImgCode(){
       var num = Math.ceil(Math.random()*10);
       loginService.AccountCode(num).then(data => {
         // this.imgcode = "https://ceshi.8min.top" + data.image_url;
-        this.imgcode = "http://192.168.2.132:18080" + data.image_url;
+        this.imgcode = "https://cuteeyes.8min.top" + data.image_url;
         this.imgkey = data.key;
       });
     },

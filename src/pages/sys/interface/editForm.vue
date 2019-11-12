@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="接口信息" :visible.sync="dialogVisible" @opened="dialogOpen">
+  <el-dialog width="500px" title="接口信息" :visible.sync="dialogVisible" @opened="dialogOpen">
     <el-form ref="form" :model="form" label-width="80px" size="small">
       <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.name"></el-input>
@@ -24,6 +24,7 @@
 </template>
 <script>
 import * as interfaceService from "@/api/sys/interface";
+import { Message } from 'element-ui';
 export default {
   name: "interfaceEditForm",
   props: {
@@ -34,12 +35,7 @@ export default {
     return {
       loading: false,
       dialogVisible: false,
-      form: {
-        name: "",
-        path: "",
-        method: "",
-        description: ""
-      }
+      form: {}
     };
   },
   watch: {

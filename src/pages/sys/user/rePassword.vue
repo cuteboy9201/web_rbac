@@ -7,7 +7,7 @@
  -->
 
 <template>
-  <el-dialog :visible.sync="dialogVisible" @opened="dialogOpen" @closed="dialogClose" top="10%" width="28%">
+  <el-dialog :visible.sync="dialogVisible" @opened="dialogOpen" @closed="dialogClose" top="10%" width="500px">
     <div slot="title">修改<el-tag>{{user.name}}</el-tag>的密码</div>    
     <el-form ref="form" :model="form" label-width="80px" size="small" :rules="rules">
       

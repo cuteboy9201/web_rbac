@@ -7,6 +7,7 @@
  -->
 <template>
   <el-dialog
+    width="500px"
     title="用户信息"
     :visible.sync="dialogVisible"
     @opened="dialogOpen"
@@ -79,6 +80,7 @@
 </template>
 <script>
 import * as userService from "@/api/sys/user";
+import { Message } from "element-ui";
 import { truncate } from 'fs';
 import { Transform } from 'stream';
 export default {
@@ -140,7 +142,7 @@ export default {
     saveUser() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          // this.loading = true;
+          this.loading = true;
           userService
             .saveUser({ ...this.form, id: this.user.id })
             .then(data => {
@@ -153,6 +155,15 @@ export default {
                 this.dialogVisible = false;
                 this.$emit("submit");
               }
+            })
+            .catch(err => {
+              Message({
+                message: err,
+                type: "error",
+                duration: 2*1000
+                }),
+                this.loading = false,
+                this.dialogVisible = true
             });
         } else {
           console.log("请求失败")

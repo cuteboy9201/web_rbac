@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="角色信息" :visible.sync="dialogVisible" @opened="dialogOpen" @closed="dialogClose">
+  <el-dialog title="角色信息" width="500px" :visible.sync="dialogVisible" @opened="dialogOpen" @closed="dialogClose">
     <el-form ref="form" :model="form" label-width="80px" size="small">
       <el-form-item prop="name" label="角色名称" :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.name"></el-input>
@@ -22,6 +22,7 @@
 </template>
 <script>
 import * as roleService from "@/api/sys/role";
+import { Message } from "element-ui";
 export default {
   name: "roleEditForm",
   props: {
@@ -32,11 +33,7 @@ export default {
     return {
       loading: false,
       dialogVisible: false,
-      form: {
-        name: "",
-        code: "",
-        description: ""
-      }
+      form: {}
     };
   },
   watch: {
@@ -72,6 +69,15 @@ export default {
               this.loading = false;
               this.dialogVisible = false;
               this.$emit("submit");
+            })
+            .catch(err => {
+              Message({
+                message: err,
+                type: "error",
+                duration: 2*1000,
+              }), 
+              this.loading = false, 
+              this.dialogVisible = true
             });
         } else {
           return false;

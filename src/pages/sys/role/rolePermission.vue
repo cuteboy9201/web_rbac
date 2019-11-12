@@ -51,21 +51,6 @@ export default {
   },
   methods: {
     async dialogOpen() {
-      // this.f1();
-      // let rolePermissions = await roleService.getRolePermissions(this.role.id);
-      // let rolePermissionList = rolePermissions.map(s => s.functionId);
-      // // this.permissionList = await menuService.getMenuList();
-      // this.$refs.tree.setCheckedKeys(rolePermissionList);
-    // if (this.role.id){
-    //   menuService.getMenuList().then(data =>{
-    //     this.permissionList = data;
-    //   });
-    //   roleService.getRolePermissions(this.role.id).then(data => {
-    //     let rolePermissions = data;
-    //     let rolePermissionList = rolePermissions.map(s => s.functionId);
-    //     this.$refs.tree.setCheckedKeys(rolePermissionList);
-    //   });
-    // }  
       this.permissionList = await menuService.getMenuList();
       let rolePermissions = await roleService.getRolePermissions(this.role.id);
       let rolePermissionList = rolePermissions.map(s => s.functionId);

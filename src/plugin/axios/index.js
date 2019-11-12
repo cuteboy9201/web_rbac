@@ -14,6 +14,11 @@ import loading from '@/libs/loading'
 import message from '@/libs/message'
 import permission from '@/libs/permission'
 
+function errorCreate(msg) {
+  const error = new Error(msg);
+  errorLog(error);
+}
+
 // 记录和显示错误
 function errorLog(err) {
   // 添加到日志
@@ -31,7 +36,7 @@ function errorLog(err) {
   Message({
     message: err.message,
     type: 'error',
-    duration: 5 * 1000
+    duration: 1 * 1000
   })
 }
 
@@ -73,25 +78,6 @@ service.interceptors.request.use(
 )
 
 // 响应拦截器
-// service.interceptors.response.use(
-//   response => {
-//     loading.hide(response.config)
-//     const res = response.data;
-//     console.log(res)
-//     if (res.statusCode !== 200) {
-//       console.log("xxx")
-//       console.log(res)
-//       Message({
-//         message: res.msg,
-//         type: 'error',
-//         duration: 3 * 1000
-//       })
-//       return Promise.reject(res.msg);
-//       // return Promise.resolve(res)
-//     } else {
-//       message(response.config)
-//       return res.data;
-//     }
 service.interceptors.response.use(
   response => {
     loading.hide(response.config)
