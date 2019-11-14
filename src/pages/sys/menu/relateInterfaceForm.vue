@@ -67,20 +67,20 @@
     </el-dialog>
 </template>
 <script>
-import * as interfaceService from "@/api/sys/interface";
+import * as interfaceService from '@/api/sys/interface'
 export default {
-  name: "relateInterfaceForm",
+  name: 'relateInterfaceForm',
   props: {
     menu: Object,
     value: Boolean
   },
-  data() {
+  data () {
     return {
       dialogVisible: false,
       searchForm: {
-        name: "",
-        path: "",
-        method: ""
+        name: '',
+        path: '',
+        method: ''
       },
       loading: false,
       tableData: [],
@@ -90,57 +90,57 @@ export default {
         total: 0
       },
       sort: {
-        prop: "",
-        order: ""
+        prop: '',
+        order: ''
       }
-    };
+    }
   },
   watch: {
-    value(val) {
-      this.dialogVisible = val;
+    value (val) {
+      this.dialogVisible = val
     },
-    dialogVisible(val) {
-      this.$emit("input", val);
+    dialogVisible (val) {
+      this.$emit('input', val)
     }
   },
   methods: {
-    dialogOpen() {
-      this.getTableData();
+    dialogOpen () {
+      this.getTableData()
     },
-    getTableData() {
+    getTableData () {
       let query = {
         pageIndex: this.page.current,
         pageSize: this.page.size,
         sortBy: this.sort.prop,
-        descending: this.sort.order === "descending",
+        descending: this.sort.order === 'descending',
         ...this.searchForm,
         functionId: this.menu.id
-      };
+      }
       interfaceService.getInterfacePagedList(query).then(data => {
-        this.tableData = data.rows;
-        this.page.total = data.totalCount;
-      });
+        this.tableData = data.rows
+        this.page.total = data.totalCount
+      })
     },
-    handleSearchFormSubmit() {
-      this.getTableData();
+    handleSearchFormSubmit () {
+      this.getTableData()
     },
-    handleSearchFormReset() {
-      this.$refs.searchForm.resetFields();
+    handleSearchFormReset () {
+      this.$refs.searchForm.resetFields()
     },
-    handleSortChange(val) {
-      this.sort.prop = val.prop;
-      this.sort.order = val.order;
-      this.getTableData();
+    handleSortChange (val) {
+      this.sort.prop = val.prop
+      this.sort.order = val.order
+      this.getTableData()
     },
-    handleSizeChange(val) {
-      this.page.size = val;
-      this.getTableData();
+    handleSizeChange (val) {
+      this.page.size = val
+      this.getTableData()
     },
-    handleCurrentChange(val) {
-      this.page.current = val;
-      this.getTableData();
+    handleCurrentChange (val) {
+      this.page.current = val
+      this.getTableData()
     },
-    relateInterface(interfaceId, action) {
+    relateInterface (interfaceId, action) {
       interfaceService
         .relateInterface({
           functionId: this.menu.id,
@@ -148,16 +148,15 @@ export default {
           action: action
         })
         .then(() => {
-          let msg = action == 1 ? "已添加" : "已移除";
+          let msg = action == 1 ? '已添加' : '已移除'
           this.$notify({
-            title: "操作成功",
+            title: '操作成功',
             message: msg,
-            type: "success"
-          });
-          this.getTableData();
-        });
+            type: 'success'
+          })
+          this.getTableData()
+        })
     }
   }
-};
+}
 </script>
-

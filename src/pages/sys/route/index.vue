@@ -76,134 +76,134 @@
 </template>
 
 <script>
-import * as routeService from "@/api/sys/route";
-import * as menuService from "@/api/sys/menu";
-import editForm from "./batchEditForm";
+import * as routeService from '@/api/sys/route'
+import * as menuService from '@/api/sys/menu'
+import editForm from './batchEditForm'
 export default {
-  name: "RoutePage",
+  name: 'RoutePage',
   components: { editForm },
-  data() {
+  data () {
     return {
       formEdit: false,
       currentId: 0,
       list: [],
       defaultProps: {
-        label: "name"
+        label: 'name'
       },
       selectData: [],
-      timeout:  null,
+      timeout: null,
       form: {
-        id: "",
+        id: '',
         parentId: 0,
-        name: "",
-        title: "",
-        path: "",
-        permission: "",
-        component: "",
-        componentPath: "",
+        name: '',
+        title: '',
+        path: '',
+        permission: '',
+        component: '',
+        componentPath: '',
         sort: 0,
         isLock: false,
         cache: true
       },
       editFormDialogVisible: false
-    };
+    }
   },
   methods: {
-    querySearchAsync(queryString, cb){
-      var restaurants = this.selectData;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-      cb(results);    
+    querySearchAsync (queryString, cb) {
+      var restaurants = this.selectData
+      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
+      cb(results)
     },
-    handleSelect(item) {
-      console.log(item);
-    }, 
-    createStateFilter(queryString) {
+    handleSelect (item) {
+      console.log(item)
+    },
+    createStateFilter (queryString) {
       return (state) => {
-        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
-      };
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1)
+      }
     },
-    getMenuType1() {
-        menuService.getMenuType1().then(data => {
-          this.selectData = data;
-        });
+    getMenuType1 () {
+      menuService.getMenuType1().then(data => {
+        this.selectData = data
+      })
     },
 
-    getRouteList() {
+    getRouteList () {
       routeService.getRouteList().then(data => {
-        this.list = data;
-      });
+        this.list = data
+      })
     },
-    getRouteData(data) {
-      let id = data.id;
+    getRouteData (data) {
+      let id = data.id
       routeService.getRoute(id).then(data => {
-        this.form = { ...data };
-        this.currentId = id;
-      });
+        this.form = { ...data }
+        this.currentId = id
+      })
     },
-    add() {
+    add () {
       this.form = {
         id: 0,
         parentId: this.currentId
-      };
-      this.formEdit = true;
+      }
+      this.formEdit = true
     },
-    Padd() {
+    Padd () {
       this.form = {
         id: 0,
         parentId: 0
-      };
-      this.formEdit = true;
+      }
+      this.formEdit = true
     },
-    edit() {
-      this.formEdit = true;
+    edit () {
+      this.formEdit = true
     },
-    del() {
-      this.$confirm("确认删除？", "确认信息", {
+    del () {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         routeService.delRoute(this.currentId).then(() => {
-          this.currentId = 0;
-          this.getRouteList();
-        });
-      });
+          this.currentId = 0
+          this.getRouteList()
+        })
+      })
     },
-    cancel() {
-      this.formEdit = false;
-      this.currentId = 0;
-      this.form = {};
+    cancel () {
+      this.formEdit = false
+      this.currentId = 0
+      this.form = {}
     },
-    submit() {
+    submit () {
       routeService.saveRoute(this.form).then(() => {
         routeService.getRouteList().then(data => {
-          this.list = data;
-        });
-      });
+          this.list = data
+        })
+      })
     },
-    reset() {
+    reset () {
       this.form = {
         id: this.currentId,
         parentId: this.form.parentId,
-        name: "",
-        title: "",
-        path: "",
-        permission: "",
-        component: "",
-        componentPath: "",
+        name: '',
+        title: '',
+        path: '',
+        permission: '',
+        component: '',
+        componentPath: '',
         sort: 0,
         isLock: false,
         cache: true
-      };
+      }
     },
-    batchEdit() {
-      this.editFormDialogVisible = !this.editFormDialogVisible;
+    batchEdit () {
+      this.editFormDialogVisible = !this.editFormDialogVisible
     }
   },
 
-  created() {
-    this.getRouteList();
-    this.getMenuType1(); 
-  },
-};
+  created () {
+    this.getRouteList()
+    this.getMenuType1()
+  }
+}
 </script>

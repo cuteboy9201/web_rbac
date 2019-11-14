@@ -22,67 +22,66 @@
   </el-dialog>
 </template>
 <script>
-import * as roleService from "@/api/sys/role";
-import * as menuService from "@/api/sys/menu";
+import * as roleService from '@/api/sys/role'
+import * as menuService from '@/api/sys/menu'
 export default {
-  name: "rolePermission",
+  name: 'rolePermission',
   props: {
     role: Object,
     value: Boolean
   },
-  data() {
+  data () {
     return {
       loading: false,
       dialogVisible: false,
-      filterText: "",
+      filterText: '',
       permissionList: []
-    };
+    }
   },
   watch: {
-    value(val) {
-      this.dialogVisible = val;
+    value (val) {
+      this.dialogVisible = val
     },
-    dialogVisible(val) {
-      this.$emit("input", val);
+    dialogVisible (val) {
+      this.$emit('input', val)
     },
-    filterText(val) {
-      this.$refs.tree.filter(val);
+    filterText (val) {
+      this.$refs.tree.filter(val)
     }
   },
   methods: {
-    async dialogOpen() {
-      this.permissionList = await menuService.getMenuList();
-      let rolePermissions = await roleService.getRolePermissions(this.role.id);
-      let rolePermissionList = rolePermissions.map(s => s.functionId);
-      this.$refs.tree.setCheckedKeys(rolePermissionList);   
+    async dialogOpen () {
+      this.permissionList = await menuService.getMenuList()
+      let rolePermissions = await roleService.getRolePermissions(this.role.id)
+      let rolePermissionList = rolePermissions.map(s => s.functionId)
+      this.$refs.tree.setCheckedKeys(rolePermissionList)
     },
-    async f1(){
-      this.permissionList = await menuService.getMenuList();
+    async f1 () {
+      this.permissionList = await menuService.getMenuList()
     },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.title.indexOf(value) !== -1;
+    filterNode (value, data) {
+      if (!value) return true
+      return data.title.indexOf(value) !== -1
     },
-    saveRolePermission() {
-      let checkedNodes = this.$refs.tree.getCheckedNodes(true, false);
-      let checkedPermissins = [];
+    saveRolePermission () {
+      let checkedNodes = this.$refs.tree.getCheckedNodes(true, false)
+      let checkedPermissins = []
       for (let checked of checkedNodes) {
-        checked.type == 2 && checkedPermissins.push(checked.id);
+        checked.type == 2 && checkedPermissins.push(checked.id)
       }
       let data = {
         roleId: this.role.id,
         permissions: checkedPermissins
-      };
-      this.loading = true;
+      }
+      this.loading = true
       roleService.savePermission(data).then(data => {
-        this.loading = false;
-        this.dialogVisible = false;
-      });
+        this.loading = false
+        this.dialogVisible = false
+      })
     },
-    close() {
-      this.dialogVisible = false;
+    close () {
+      this.dialogVisible = false
     }
   }
-};
+}
 </script>
-

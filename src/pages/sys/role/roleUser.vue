@@ -65,19 +65,19 @@
   </el-dialog>
 </template>
 <script>
-import * as userService from "@/api/sys/user";
+import * as userService from '@/api/sys/user'
 export default {
-  name: "roleUser",
+  name: 'roleUser',
   props: {
     role: Object,
     value: Boolean
   },
-  data() {
+  data () {
     return {
       dialogVisible: false,
       searchForm: {
-        name: "",
-        email: ""
+        name: '',
+        email: ''
       },
       loading: false,
       tableData: [],
@@ -87,56 +87,56 @@ export default {
         total: 0
       },
       sort: {
-        prop: "",
-        order: ""
+        prop: '',
+        order: ''
       }
-    };
+    }
   },
   watch: {
-    value(val) {
-      this.dialogVisible = val;
+    value (val) {
+      this.dialogVisible = val
     },
-    dialogVisible(val) {
-      this.$emit("input", val);
+    dialogVisible (val) {
+      this.$emit('input', val)
     }
   },
   methods: {
-    async dialogOpen() {
-      this.getTableData();
+    async dialogOpen () {
+      this.getTableData()
     },
-    getTableData() {
+    getTableData () {
       let query = {
         pageIndex: this.page.current,
         pageSize: this.page.size,
         sortBy: this.sort.prop,
-        descending: this.sort.order === "descending",
+        descending: this.sort.order === 'descending',
         filter: { ...this.searchForm, roleId: this.role.id }
-      };
+      }
       userService.getUserPagedList(query).then(data => {
-        this.tableData = data.rows;
-        this.page.total = data.totalCount;
-      });
+        this.tableData = data.rows
+        this.page.total = data.totalCount
+      })
     },
-    handleSearchFormSubmit() {
-      this.getTableData();
+    handleSearchFormSubmit () {
+      this.getTableData()
     },
-    handleSearchFormReset() {
-      this.$refs.searchForm.resetFields();
+    handleSearchFormReset () {
+      this.$refs.searchForm.resetFields()
     },
-    handleSortChange(val) {
-      this.sort.prop = val.prop;
-      this.sort.order = val.order;
-      this.getTableData();
+    handleSortChange (val) {
+      this.sort.prop = val.prop
+      this.sort.order = val.order
+      this.getTableData()
     },
-    handleSizeChange(val) {
-      this.page.size = val;
-      this.getTableData();
+    handleSizeChange (val) {
+      this.page.size = val
+      this.getTableData()
     },
-    handleCurrentChange(val) {
-      this.page.current = val;
-      this.getTableData();
+    handleCurrentChange (val) {
+      this.page.current = val
+      this.getTableData()
     },
-    modifyRoleUser(userId, action) {
+    modifyRoleUser (userId, action) {
       userService
         .editRoleUser({
           roleId: this.role.id,
@@ -144,16 +144,15 @@ export default {
           action: action
         })
         .then(() => {
-          let msg = action == 1 ? "已添加" : "已移除";
+          let msg = action == 1 ? '已添加' : '已移除'
           this.$notify({
-            title: "操作成功",
+            title: '操作成功',
             message: msg,
-            type: "success"
-          });
-          this.getTableData();
-        });
+            type: 'success'
+          })
+          this.getTableData()
+        })
     }
   }
-};
+}
 </script>
-

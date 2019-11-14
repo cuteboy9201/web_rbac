@@ -76,17 +76,17 @@
   </d2-container>
 </template>
 <script>
-import * as interfaceService from "@/api/sys/interface";
-import editForm from "./editForm";
+import * as interfaceService from '@/api/sys/interface'
+import editForm from './editForm'
 export default {
-  name: "InterfacePage",
+  name: 'InterfacePage',
   components: { editForm },
-  data() {
+  data () {
     return {
       searchForm: {
-        name: "",
-        path: "",
-        method: ""
+        name: '',
+        path: '',
+        method: ''
       },
       loading: false,
       tableData: [],
@@ -97,86 +97,86 @@ export default {
         total: 0
       },
       sort: {
-        prop: "",
-        order: ""
+        prop: '',
+        order: ''
       },
       entity: {},
       editFormVisible: false
-    };
+    }
   },
-  mounted() {
-    this.getTableData();
+  mounted () {
+    this.getTableData()
   },
   methods: {
-    getTableData() {
+    getTableData () {
       let query = {
         pageIndex: this.page.current,
         pageSize: this.page.size,
         sortBy: this.sort.prop,
-        descending: this.sort.order === "descending",
+        descending: this.sort.order === 'descending',
         ...this.searchForm
-      };
+      }
       interfaceService.getInterfacePagedList(query).then(data => {
-        this.tableData = data.rows;
-        this.page.total = data.totalCount;
-      });
+        this.tableData = data.rows
+        this.page.total = data.totalCount
+      })
     },
-    handleSearchFormSubmit() {
-      this.getTableData();
+    handleSearchFormSubmit () {
+      this.getTableData()
     },
-    handleSearchFormReset() {
-      this.$refs.searchForm.resetFields();
+    handleSearchFormReset () {
+      this.$refs.searchForm.resetFields()
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
-    handleSortChange(val) {
-      this.sort.prop = val.prop;
-      this.sort.order = val.order;
-      this.getTableData();
+    handleSortChange (val) {
+      this.sort.prop = val.prop
+      this.sort.order = val.order
+      this.getTableData()
     },
-    handleSizeChange(val) {
-      this.page.size = val;
-      this.getTableData();
+    handleSizeChange (val) {
+      this.page.size = val
+      this.getTableData()
     },
-    handleCurrentChange(val) {
-      this.page.current = val;
-      this.getTableData();
+    handleCurrentChange (val) {
+      this.page.current = val
+      this.getTableData()
     },
-    openEditForm(entity) {
-      this.entity = entity;
-      this.editFormVisible = true;
+    openEditForm (entity) {
+      this.entity = entity
+      this.editFormVisible = true
     },
-    add() {
-      this.entity = {};
-      this.editFormVisible = true;
+    add () {
+      this.entity = {}
+      this.editFormVisible = true
     },
-    batchDel() {
-      this.$confirm("确认删除？", "确认信息", {
+    batchDel () {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         interfaceService
           .delInterfaces({
             ids: JSON.stringify(this.multipleSelection.map(s => s.id))
           })
           .then(() => {
-            this.getTableData();
-          });
-      });
+            this.getTableData()
+          })
+      })
     },
-    del(id) {
-      this.$confirm("确认删除？", "确认信息", {
+    del (id) {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         interfaceService.delInterface(id).then(() => {
-          this.getTableData();
-        });
-      });
+          this.getTableData()
+        })
+      })
     }
   }
-};
+}
 </script>

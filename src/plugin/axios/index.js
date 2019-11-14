@@ -14,13 +14,13 @@ import loading from '@/libs/loading'
 import message from '@/libs/message'
 import permission from '@/libs/permission'
 
-function errorCreate(msg) {
-  const error = new Error(msg);
-  errorLog(error);
+function errorCreate (msg) {
+  const error = new Error(msg)
+  errorLog(error)
 }
 
 // 记录和显示错误
-function errorLog(err) {
+function errorLog (err) {
   // 添加到日志
   store.dispatch('d2admin/log/add', {
     type: 'error',
@@ -81,33 +81,33 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     loading.hide(response.config)
-    const res = response.data;
+    const res = response.data
     const { statusCode } = res
-    const { msg } = res 
-   if ( statusCode === undefined){
+    const { msg } = res
+    if (statusCode === undefined) {
       return res
-    }else {
-      switch(statusCode) {
+    } else {
+      switch (statusCode) {
         case 200:
-          return res.data;
+          return res.data
         case 500:
           errorCreate(`[code: 500] ${response.config.url}`)
           return Promise.reject(res.msg)
         default:
           errorCreate(`${response.config.url}`)
-          return res;
+          return res
       }
     }
   },
   error => {
     loading.hide(error.config)
-    if (error && error.response){
-      switch(error.response.status) {
+    if (error && error.response) {
+      switch (error.response.status) {
         case 400:
-        case 401:  
+        case 401:
           util.cookies.remove('token')
           util.cookies.remove('uuid')
-          if (error.config.url.indexOf("logout") === -1) {
+          if (error.config.url.indexOf('logout') === -1) {
             Message({
               message: '登陆信息已过期,请重新登陆!',
               type: 'error',
@@ -115,19 +115,19 @@ service.interceptors.response.use(
             })
           };
           router.push({
-            name: "login"
-          });
-          break    
+            name: 'login'
+          })
+          break
         case 403: error.message = '拒绝访问'; errorLog(error); break
-        case 404: error.message = `请求地址出错: ${error.response.config.url}`; errorLog(error);break
+        case 404: error.message = `请求地址出错: ${error.response.config.url}`; errorLog(error); break
         case 408: error.message = '请求超时'; errorLog(error); break
         case 500: error.message = '服务器内部错误'; errorLog(error); break
-        case 501: error.message = '服务未实现'; errorLog(error);break
-        case 502: error.message = '网关错误'; errorLog(error);break
-        case 503: error.message = '服务不可用'; errorLog(error);break
-        case 504: error.message = '网关超时'; errorLog(error);break
-        case 505: error.message = 'HTTP版本不受支持'; errorLog(error);break
-        default: break        
+        case 501: error.message = '服务未实现'; errorLog(error); break
+        case 502: error.message = '网关错误'; errorLog(error); break
+        case 503: error.message = '服务不可用'; errorLog(error); break
+        case 504: error.message = '网关超时'; errorLog(error); break
+        case 505: error.message = 'HTTP版本不受支持'; errorLog(error); break
+        default: break
       }
     }
     return Promise.reject(error)

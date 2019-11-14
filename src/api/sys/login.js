@@ -7,7 +7,7 @@
  */
 import request from '@/plugin/axios'
 
-export function AccountLogin(data) {
+export function AccountLogin (data) {
   return request({
     url: '/rbac/auth/login',
     method: 'post',
@@ -25,9 +25,9 @@ export function AccountLogin(data) {
   })
 }
 
-export function AccountCode(num) {
+export function AccountCode (num) {
   return request({
     url: '/rbac/captcha/refresh?' + num,
-    method: 'get',
+    method: 'get'
   })
 }

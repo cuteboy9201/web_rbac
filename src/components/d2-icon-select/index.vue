@@ -48,27 +48,27 @@
 </template>
 
 <script>
-import icon from "./data/index";
+import icon from './data/index'
 export default {
-  name: "d2-icon-select",
+  name: 'd2-icon-select',
   props: {
     // 值
     value: {
       type: String,
       required: false,
-      default: ""
+      default: ''
     },
     // 占位符
     placeholder: {
       type: String,
       required: false,
-      default: "请选择"
+      default: '请选择'
     },
     // 弹出界面的方向
     placement: {
       type: String,
       required: false,
-      default: "right"
+      default: 'right'
     },
     // 是否可清空
     clearable: {
@@ -89,36 +89,36 @@ export default {
       default: true
     }
   },
-  data() {
+  data () {
     return {
       // 绑定弹出框
       pop: false,
       // 所有图标
       icon,
       // 组件内输入框的值
-      currentValue: "",
+      currentValue: '',
       // 搜索的文字
-      searchText: "",
+      searchText: '',
       // 不是搜索的时候显示的折叠面板绑定的展开数据
       collapseActive: []
       // collapseActive: [...Array(icon.length)].map((e, i) => i)
-    };
+    }
   },
   computed: {
     // 输入框上绑定的设置
-    bind() {
+    bind () {
       return {
         placeholder: this.placeholder,
         clearable: this.clearable,
         ...this.$attrs
-      };
+      }
     },
     // 是否在搜索
-    searchMode() {
-      return !!this.searchText;
+    searchMode () {
+      return !!this.searchText
     },
     // 过滤后的图标
-    iconFilted() {
+    iconFilted () {
       return this.icon
         .map(iconClass => ({
           title: iconClass.title,
@@ -126,26 +126,26 @@ export default {
             icon => icon.indexOf(this.searchText) >= 0
           )
         }))
-        .filter(iconClass => iconClass.icon.length > 0);
+        .filter(iconClass => iconClass.icon.length > 0)
     }
   },
   watch: {
-    value(value) {
-      this.currentValue = value;
+    value (value) {
+      this.currentValue = value
     }
   },
-  created() {
-    this.currentValue = this.value;
+  created () {
+    this.currentValue = this.value
   },
   methods: {
-    selectIcon(iconName = "") {
-      this.$emit("input", iconName);
+    selectIcon (iconName = '') {
+      this.$emit('input', iconName)
       if (iconName && this.autoClose) {
-        this.pop = false;
+        this.pop = false
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

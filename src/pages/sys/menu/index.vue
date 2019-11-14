@@ -127,7 +127,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            
+
             <el-form-item v-if="menuform.type==1"
               label="路径"
               prop="path"
@@ -147,7 +147,7 @@
                 :user-input="true"
               />
             </el-form-item>
-            <el-form-item 
+            <el-form-item
               label="权限标识"
               prop="permission"
             >
@@ -203,28 +203,28 @@
 </template>
 
 <script>
-import * as menuService from "@/api/sys/menu";
-import editForm from "./batchEditForm";
-import relateInterfaceForm from "./relateInterfaceForm";
-import { Message } from 'element-ui';
+import * as menuService from '@/api/sys/menu'
+import editForm from './batchEditForm'
+import relateInterfaceForm from './relateInterfaceForm'
+import { Message } from 'element-ui'
 export default {
-  name: "MenuPage",
+  name: 'MenuPage',
   components: { editForm, relateInterfaceForm },
-  data() {
+  data () {
     return {
       formEdit: false,
       currentId: 0,
       menuList: [],
       defaultProps: {
-        label: "title"
+        label: 'title'
       },
       menuform: {
-        id: "",
+        id: '',
         parentId: 0,
-        title: "",
-        path: "",
-        icon: "",
-        permission: "",
+        title: '',
+        path: '',
+        icon: '',
+        permission: '',
         sort: 0,
         type: 1,
         isLock: false
@@ -232,26 +232,26 @@ export default {
       typeOptions: [
         {
           value: 1,
-          label: "菜单"
+          label: '菜单'
         },
         {
           value: 2,
-          label: "功能"
+          label: '功能'
         }
       ],
       editFormDialogVisible: false,
       relateInterfaceDialogVisible: false,
-      canAdd: this.hasPermissions(["p_menu_edit"])
-    };
+      canAdd: this.hasPermissions(['p_menu_edit'])
+    }
   },
   methods: {
-    getMenuList() {
+    getMenuList () {
       menuService.getMenuList().then(data => {
-        this.menuList = data;
-      });
+        this.menuList = data
+      })
     },
-    getMenuData(data) {
-      let id = data.id;
+    getMenuData (data) {
+      let id = data.id
       menuService.getMenu(id).then(data => {
         this.menuform = {
           id: data.id,
@@ -263,79 +263,79 @@ export default {
           sort: data.sort,
           type: data.type,
           isLock: data.isLock
-        };
-        this.currentId = id;
-      }).catch(err =>{
+        }
+        this.currentId = id
+      }).catch(err => {
         Message({
-          message: err, 
-          type: "error",
-          duration: 2*1000
+          message: err,
+          type: 'error',
+          duration: 2 * 1000
         })
-      });
+      })
     },
-    add() {
+    add () {
       this.menuform = {
         id: 0,
         parentId: this.currentId
-      };
-      this.formEdit = true;
+      }
+      this.formEdit = true
     },
-    Padd() {
+    Padd () {
       this.menuform = {
         id: 0,
         parentId: 0
-      };
-      this.formEdit = true;
+      }
+      this.formEdit = true
     },
-    edit() {
-      this.formEdit = true;
+    edit () {
+      this.formEdit = true
     },
-    del() {
-      this.$confirm("确认删除？", "确认信息", {
+    del () {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         menuService.delMenu(this.currentId).then(() => {
-          this.currentId = 0;
-          this.getMenuList();
-        });
-      });
+          this.currentId = 0
+          this.getMenuList()
+        })
+      })
     },
-    cancel() {
-      this.formEdit = false;
-      this.currentId = 0;
-      this.menuform = {};
+    cancel () {
+      this.formEdit = false
+      this.currentId = 0
+      this.menuform = {}
     },
-    submit() {
+    submit () {
       menuService.saveMenu(this.menuform).then(() => {
         menuService.getMenuList().then(data => {
-          this.menuList = data;
-        });
-      });
+          this.menuList = data
+        })
+      })
     },
-    reset() {
+    reset () {
       this.menuform = {
         id: this.currentId,
         parentId: this.menuform.parentId,
-        title: "",
-        path: "",
-        icon: "",
-        permission: "",
+        title: '',
+        path: '',
+        icon: '',
+        permission: '',
         sort: 0,
         type: 1,
         isLock: false
-      };
+      }
     },
-    batchEdit() {
-      this.editFormDialogVisible = !this.editFormDialogVisible;
+    batchEdit () {
+      this.editFormDialogVisible = !this.editFormDialogVisible
     },
-    openInterfaceDialog() {
-      this.relateInterfaceDialogVisible = !this.relateInterfaceDialogVisible;
+    openInterfaceDialog () {
+      this.relateInterfaceDialogVisible = !this.relateInterfaceDialogVisible
     }
   },
-  created() {
-    this.getMenuList();
+  created () {
+    this.getMenuList()
   }
-};
+}
 </script>

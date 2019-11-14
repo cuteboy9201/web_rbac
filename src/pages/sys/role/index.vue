@@ -74,15 +74,15 @@
   </d2-container>
 </template>
 <script>
-import * as roleService from "@/api/sys/role";
-import editForm from "./editForm";
-import rolePermission from "./rolePermission";
-import roleUser from "./roleUser";
-import { Message } from 'element-ui';
+import * as roleService from '@/api/sys/role'
+import editForm from './editForm'
+import rolePermission from './rolePermission'
+import roleUser from './roleUser'
+import { Message } from 'element-ui'
 export default {
-  name: "RolePage",
+  name: 'RolePage',
   components: { editForm, rolePermission, roleUser },
-  data() {
+  data () {
     return {
       searchForm: {},
       loading: false,
@@ -94,114 +94,113 @@ export default {
         total: 0
       },
       sort: {
-        prop: "",
-        order: ""
+        prop: '',
+        order: ''
       },
-      role: { id: "", name: "" },
+      role: { id: '', name: '' },
       editFormVisible: false,
       permissionDialogVisible: false,
       roleUserDialogVisible: false
-    };
+    }
   },
-  mounted() {
-    this.getTableData();
+  mounted () {
+    this.getTableData()
   },
   methods: {
-    getTableData() {
+    getTableData () {
       let query = {
         pageIndex: this.page.current,
         pageSize: this.page.size,
         sortBy: this.sort.prop,
-        descending: this.sort.order === "descending",
+        descending: this.sort.order === 'descending',
         filter: this.searchForm
-      };
+      }
       roleService.getRolePagedList(query).then(data => {
-        this.tableData = data.rows;
-        this.page.total = data.totalCount;
-      });
+        this.tableData = data.rows
+        this.page.total = data.totalCount
+      })
     },
-    handleSearchFormSubmit() {
-      this.getTableData();
+    handleSearchFormSubmit () {
+      this.getTableData()
     },
-    handleSearchFormReset() {
-      this.$refs.searchForm.resetFields();
+    handleSearchFormReset () {
+      this.$refs.searchForm.resetFields()
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
-    handleSortChange(val) {
-      this.sort.prop = val.prop;
-      this.sort.order = val.order;
-      this.getTableData();
+    handleSortChange (val) {
+      this.sort.prop = val.prop
+      this.sort.order = val.order
+      this.getTableData()
     },
-    handleSizeChange(val) {
-      this.page.size = val;
-      this.getTableData();
+    handleSizeChange (val) {
+      this.page.size = val
+      this.getTableData()
     },
-    handleCurrentChange(val) {
-      this.page.current = val;
-      this.getTableData();
+    handleCurrentChange (val) {
+      this.page.current = val
+      this.getTableData()
     },
-    delRole(id) {
-      this.$confirm("确认删除？", "确认信息", {
+    delRole (id) {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         roleService.delRole(id)
-        .then(() => {
-          this.getTableData();
-        })
-        .catch( err => {
+          .then(() => {
+            this.getTableData()
+          })
+          .catch(err => {
             Message({
-              message: err, 
-              type: "error",
-              duration: 2*1000
-            });
-            this.getTableData();
-        })
-      });
+              message: err,
+              type: 'error',
+              duration: 2 * 1000
+            })
+            this.getTableData()
+          })
+      })
     },
-    batchDel() {
-      this.$confirm("确认删除？", "确认信息", {
+    batchDel () {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         roleService
           .delRoles({
             ids: JSON.stringify(this.multipleSelection.map(s => s.id))
           })
           .then(() => {
-            this.getTableData();
+            this.getTableData()
           })
-          .catch(error=>{
+          .catch(error => {
             Message({
               message: error,
-              type: "error",
-              duration: 2*1000
+              type: 'error',
+              duration: 2 * 1000
             }),
-            this.getTableData();
+            this.getTableData()
           })
-          ;
-      });
+      })
     },
-    openEditForm(role) {
-      this.role = role;
-      this.editFormVisible = true;
+    openEditForm (role) {
+      this.role = role
+      this.editFormVisible = true
     },
-    add() {
-      this.role = {};
-      this.editFormVisible = true;
+    add () {
+      this.role = {}
+      this.editFormVisible = true
     },
-    openPermissionDialog(role) {
-      this.role = role;
-      this.permissionDialogVisible = true;
+    openPermissionDialog (role) {
+      this.role = role
+      this.permissionDialogVisible = true
     },
-    openRoleUserDialog(role) {
-      this.role = role;
-      this.roleUserDialogVisible = !this.roleUserDialogVisible;
+    openRoleUserDialog (role) {
+      this.role = role
+      this.roleUserDialogVisible = !this.roleUserDialogVisible
     }
   }
-};
+}
 </script>

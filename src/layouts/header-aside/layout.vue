@@ -103,7 +103,7 @@ export default {
     'd2-header-search': () => import('./components/header-search'),
     'd2-header-size': () => import('./components/header-size'),
     // 'd2-header-theme': () => import('./components/header-theme'),
-    'd2-header-user': () => import('./components/header-user'),
+    'd2-header-user': () => import('./components/header-user')
     // 'd2-header-error-log': () => import('./components/header-error-log')
   },
   data () {

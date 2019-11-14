@@ -23,69 +23,68 @@
 
 </template>
 <script>
-import * as interfaceService from "@/api/sys/interface";
-import { Message } from 'element-ui';
+import * as interfaceService from '@/api/sys/interface'
+import { Message } from 'element-ui'
 export default {
-  name: "interfaceEditForm",
+  name: 'interfaceEditForm',
   props: {
     entity: Object,
     value: Boolean
   },
-  data() {
+  data () {
     return {
       loading: false,
       dialogVisible: false,
       form: {}
-    };
+    }
   },
   watch: {
-    value(val) {
-      this.dialogVisible = val;
+    value (val) {
+      this.dialogVisible = val
     },
-    dialogVisible(val) {
-      this.$emit("input", val);
+    dialogVisible (val) {
+      this.$emit('input', val)
     }
   },
   methods: {
-    dialogOpen() {
-      this.$refs.form.resetFields();
+    dialogOpen () {
+      this.$refs.form.resetFields()
       if (this.entity.id) {
         interfaceService.getInterface(this.entity.id).then(data => {
-          let form = {};
-          form.name = data.name;
-          form.path = data.path;
-          form.method = data.method;
-          form.description = data.description;
-          this.form = form;
-        });
+          let form = {}
+          form.name = data.name
+          form.path = data.path
+          form.method = data.method
+          form.description = data.description
+          this.form = form
+        })
       } else {
-        this.form = {};
+        this.form = {}
       }
     },
-    saveInterface() {
-      this.$refs["form"].validate(valid => {
+    saveInterface () {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           interfaceService
             .saveInterface({ ...this.form, id: this.entity.id })
             .then(data => {
-              this.loading = false;
-              this.dialogVisible = false;
-              this.$emit("submit");
+              this.loading = false
+              this.dialogVisible = false
+              this.$emit('submit')
             })
             .catch(() => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    close() {
-      this.$refs["form"].resetFields();
-      this.dialogVisible = false;
+    close () {
+      this.$refs['form'].resetFields()
+      this.dialogVisible = false
     }
   }
-};
+}
 </script>
-

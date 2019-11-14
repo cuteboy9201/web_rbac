@@ -9,7 +9,7 @@
   <d2-container class="page">
 
     <!--正文 -->
-  
+
   </d2-container>
 </template>
 

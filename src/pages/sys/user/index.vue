@@ -191,19 +191,19 @@
   </d2-container>
 </template>
 <script>
-import * as userService from "@/api/sys/user";
-import userRole from "./userRole";
-import editForm from "./editForm";
-import rePassword from "./rePassword";
-import { Message } from 'element-ui';
+import * as userService from '@/api/sys/user'
+import userRole from './userRole'
+import editForm from './editForm'
+import rePassword from './rePassword'
+import { Message } from 'element-ui'
 export default {
-  name: "UserPage",
-  components: { editForm, userRole,rePassword },
-  data() {
+  name: 'UserPage',
+  components: { editForm, userRole, rePassword },
+  data () {
     return {
       searchForm: {
-        name: "",
-        email: ""
+        name: '',
+        email: ''
       },
       loading: false,
       tableData: [],
@@ -214,114 +214,114 @@ export default {
         total: 0
       },
       sort: {
-        prop: "",
-        order: ""
+        prop: '',
+        order: ''
       },
       user: {},
       editFormVisible: false,
       userRoleDialogVisible: false,
-      rePasswordVisible: false,
-    };
+      rePasswordVisible: false
+    }
   },
-  mounted() {
-    this.getTableData();
+  mounted () {
+    this.getTableData()
   },
   methods: {
-    getTableData() {
+    getTableData () {
       let query = {
         pageIndex: this.page.current,
         pageSize: this.page.size,
         sortBy: this.sort.prop,
-        descending: this.sort.order === "descending",
+        descending: this.sort.order === 'descending',
         filter: this.searchForm
-      };
+      }
       userService.getUserPagedList(query).then(data => {
-        this.tableData = data.rows;
-        this.page.total = data.totalCount;
-      });
+        this.tableData = data.rows
+        this.page.total = data.totalCount
+      })
     },
-    handleSearchFormSubmit() {
-      this.getTableData();
+    handleSearchFormSubmit () {
+      this.getTableData()
     },
-    handleSearchFormReset() {
-      this.$refs.searchForm.resetFields();
+    handleSearchFormReset () {
+      this.$refs.searchForm.resetFields()
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
-    handleSortChange(val) {
-      this.sort.prop = val.prop;
-      this.sort.order = val.order;
-      this.getTableData();
+    handleSortChange (val) {
+      this.sort.prop = val.prop
+      this.sort.order = val.order
+      this.getTableData()
     },
-    handleSizeChange(val) {
-      this.page.size = val;
-      this.getTableData();
+    handleSizeChange (val) {
+      this.page.size = val
+      this.getTableData()
     },
-    handleCurrentChange(val) {
-      this.page.current = val;
-      this.getTableData();
+    handleCurrentChange (val) {
+      this.page.current = val
+      this.getTableData()
     },
-    openEditForm(user) {
-      this.user = user;
-      this.editFormVisible = true;
+    openEditForm (user) {
+      this.user = user
+      this.editFormVisible = true
     },
-    openResetPassForm(user){
-      this.user = user;
-      this.rePasswordVisible = true;
+    openResetPassForm (user) {
+      this.user = user
+      this.rePasswordVisible = true
     },
-    add() {
-      this.user = {};
-      this.editFormVisible = true;
+    add () {
+      this.user = {}
+      this.editFormVisible = true
     },
-    openUserRoleDialog(user) {
-      this.user = user;
-      this.userRoleDialogVisible = true;
+    openUserRoleDialog (user) {
+      this.user = user
+      this.userRoleDialogVisible = true
     },
-    batchDel() {
-      this.$confirm("确认删除？", "确认信息", {
+    batchDel () {
+      this.$confirm('确认删除？', '确认信息', {
         distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
       }).then(() => {
         userService
           .delUsers({
             ids: JSON.stringify(this.multipleSelection.map(s => s.id))
           })
           .then(() => {
-            this.getTableData();
+            this.getTableData()
           })
           .catch(err => {
             Message({
               message: err,
-              type: "error",
-              duration: 2*1000
-            });
-            this.getTableData();
-          });
-      });
-    },
-    del(id) {
-      this.$confirm("确认删除？", "确认信息", {
-        distinguishCancelAndClose: true,
-        confirmButtonText: "删除",
-        cancelButtonText: "取消"
-      })
-      .then(() => {
-        userService.delUser(id)
-          .then(() => {
-            this.getTableData();
+              type: 'error',
+              duration: 2 * 1000
             })
-        .catch(err => {
-            Message({
-              message: err,
-              type: "error",
-              duration: 2*1000
-            });
-            this.getTableData();
-        });
-      });
+            this.getTableData()
+          })
+      })
+    },
+    del (id) {
+      this.$confirm('确认删除？', '确认信息', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '删除',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          userService.delUser(id)
+            .then(() => {
+              this.getTableData()
+            })
+            .catch(err => {
+              Message({
+                message: err,
+                type: 'error',
+                duration: 2 * 1000
+              })
+              this.getTableData()
+            })
+        })
     }
   }
-};
+}
 </script>

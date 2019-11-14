@@ -57,61 +57,61 @@
 
 <script>
 
-require("particles.js");
-import config from "./config/default";
-import * as loginService from "@/api/sys/login";
-import { mapActions } from "vuex";
+import config from './config/default'
+import * as loginService from '@/api/sys/login'
+import { mapActions } from 'vuex'
+require('particles.js')
 export default {
-  data() {
+  data () {
     return {
-      imgcode: "", 
-      imgkey: "",
+      imgcode: '',
+      imgkey: '',
       dialogVisible: false,
       users: [
         {
-          name: "",
-          username: "",
-          password: ""
-        },
+          name: '',
+          username: '',
+          password: ''
+        }
       ],
       // 表单
       formLogin: {
-        username: "",
-        password: "",
-        code: ""
+        username: '',
+        password: '',
+        code: ''
       },
       // 校验
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" }
+          { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
-    };
+    }
   },
-  mounted() {
+  mounted () {
     // 初始化例子插件
     // location.reload();
-    particlesJS("login", config);
+    particlesJS('login', config)
   },
-  created() {
-    this.changeImgCode();
+  created () {
+    this.changeImgCode()
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (pJSDom && pJSDom.length > 0) {
-      pJSDom[0].pJS.fn.vendors.destroypJS();
-      pJSDom = [];
+      pJSDom[0].pJS.fn.vendors.destroypJS()
+      pJSDom = []
     }
   },
   methods: {
-    ...mapActions("d2admin/account", ["login"]),
-    
+    ...mapActions('d2admin/account', ['login']),
+
     /**
      * @description 提交表单
      */
     // 提交登录信息
-    submit() {
+    submit () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           // 登录
@@ -122,25 +122,25 @@ export default {
             username: this.formLogin.username,
             password: this.formLogin.password,
             code: this.formLogin.code,
-            codekey: this.imgkey,
-          });
+            codekey: this.imgkey
+          })
         } else {
           // 登录表单校验失败
-          this.$message.error("表单校验失败");
+          this.$message.error('表单校验失败')
         }
-        
-      });
+      })
     },
-    changeImgCode(){
-      var num = Math.ceil(Math.random()*10);
+    changeImgCode () {
+      var num = Math.ceil(Math.random() * 10)
       loginService.AccountCode(num).then(data => {
         // this.imgcode = "http://dev.code.cn" + data.image_url;
-        this.imgcode = "https://cuteeyes.8min.top" + data.image_url;
-        this.imgkey = data.key;
-      });
-    },
+
+        this.imgcode = 'https://cuteeyes.8min.top' + data.image_url
+        this.imgkey = data.key
+      })
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">

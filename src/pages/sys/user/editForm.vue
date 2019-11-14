@@ -48,7 +48,6 @@
       <el-input v-model="form.phone" ></el-input>
       </el-form-item>
 
-      
       <el-form-item  v-if="!this.user.id"
         prop="password"
         label="密码">
@@ -56,7 +55,7 @@
         <!-- <i slot="suffix" title="显示密码" @click="changePass('show')" style="cursor:pointer;" class="el-input__icon iconfont icon-xianshi"></i> -->
       </el-input>
       </el-form-item>
-    
+
       <el-form-item v-if="!this.user.id"
         prop="repassword"
         label="确认密码">
@@ -79,26 +78,26 @@
 
 </template>
 <script>
-import * as userService from "@/api/sys/user";
-import { Message } from "element-ui";
-import { truncate } from 'fs';
-import { Transform } from 'stream';
+import * as userService from '@/api/sys/user'
+import { Message } from 'element-ui'
+import { truncate } from 'fs'
+import { Transform } from 'stream'
 export default {
-  name: "userEditForm",
+  name: 'userEditForm',
   props: {
     user: Object,
     value: Boolean
   },
-  data() {
-    var validataPass = (rule, value, callback) =>{
-      if ( value === '') {
-        callback(new Error('请再次输入密码'));
-      }else if (value !== this.form.password){
-        callback(new Error('两次输入的密码不一致!'));
+  data () {
+    var validataPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入的密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loading: false,
       dialogVisible: false,
@@ -106,76 +105,75 @@ export default {
       },
       rules: {
         password: [
-          {required: true, message: "请输入密码", trigger: 'blur'},
-          {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,30}$/, message: '密码为数字，小写字母，大写字母，特殊符号 至少包含三种，长度为 8 - 30位' }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,30}$/, message: '密码为数字，小写字母，大写字母，特殊符号 至少包含三种，长度为 8 - 30位' }
         ],
         repassword: [
-          {required: true, validator: validataPass, trigger: 'blur'}
+          { required: true, validator: validataPass, trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   watch: {
-    value(val) {
-      this.dialogVisible = val;
+    value (val) {
+      this.dialogVisible = val
     },
-    dialogVisible(val) {
-      this.$emit("input", val);
+    dialogVisible (val) {
+      this.$emit('input', val)
     }
   },
   methods: {
-    dialogOpen() {
-      this.$refs.form.resetFields();
+    dialogOpen () {
+      this.$refs.form.resetFields()
       if (this.user.id) {
         userService.getUser(this.user.id).then(data => {
-          let form = {};
-          form.name = data.name;
-          form.trueName = data.trueName;
-          form.phone = data.phone;
-          form.email = data.email;
-          this.form = form;
-        });
+          let form = {}
+          form.name = data.name
+          form.trueName = data.trueName
+          form.phone = data.phone
+          form.email = data.email
+          this.form = form
+        })
       } else {
-        this.form = {};
+        this.form = {}
       }
     },
-    saveUser() {
-      this.$refs["form"].validate(valid => {
+    saveUser () {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           userService
             .saveUser({ ...this.form, id: this.user.id })
             .then(data => {
-              if (data.statusCode === 500){
+              if (data.statusCode === 500) {
                 this.loading = false,
                 this.dialogVisible = true
               } else {
-                console.log("请求成功")
-                this.loading = false;
-                this.dialogVisible = false;
-                this.$emit("submit");
+                console.log('请求成功')
+                this.loading = false
+                this.dialogVisible = false
+                this.$emit('submit')
               }
             })
             .catch(err => {
               Message({
                 message: err,
-                type: "error",
-                duration: 2*1000
-                }),
-                this.loading = false,
-                this.dialogVisible = true
-            });
+                type: 'error',
+                duration: 2 * 1000
+              }),
+              this.loading = false,
+              this.dialogVisible = true
+            })
         } else {
-          console.log("请求失败")
-          return false;
+          console.log('请求失败')
+          return false
         }
-      });
+      })
     },
-    close() {
-      this.$refs["form"].resetFields();
-      this.dialogVisible = false;
+    close () {
+      this.$refs['form'].resetFields()
+      this.dialogVisible = false
     }
   }
-};
+}
 </script>
-

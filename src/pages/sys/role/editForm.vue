@@ -21,77 +21,76 @@
 
 </template>
 <script>
-import * as roleService from "@/api/sys/role";
-import { Message } from "element-ui";
+import * as roleService from '@/api/sys/role'
+import { Message } from 'element-ui'
 export default {
-  name: "roleEditForm",
+  name: 'roleEditForm',
   props: {
     role: Object,
     value: Boolean
   },
-  data() {
+  data () {
     return {
       loading: false,
       dialogVisible: false,
       form: {}
-    };
+    }
   },
   watch: {
-    value(val) {
-      this.dialogVisible = val;
+    value (val) {
+      this.dialogVisible = val
     },
-    dialogVisible(val) {
-      this.$emit("input", val);
+    dialogVisible (val) {
+      this.$emit('input', val)
     }
   },
   methods: {
-    dialogOpen() {
-      this.$refs.form.resetFields();
+    dialogOpen () {
+      this.$refs.form.resetFields()
       if (this.role.id) {
         roleService.getRole(this.role.id).then(data => {
-          let form = {};
-          form.name = data.name;
-          form.code = data.code;
-          form.description = data.description;
-          this.form = form;
-        });
+          let form = {}
+          form.name = data.name
+          form.code = data.code
+          form.description = data.description
+          this.form = form
+        })
       } else {
-        this.form = {};
+        this.form = {}
       }
     },
-    saveRole() {
-      this.$refs["form"].validate(valid => {
+    saveRole () {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           roleService
             .saveRole({ ...this.form, id: this.role.id })
             .then(data => {
-              this.loading = false;
-              this.dialogVisible = false;
-              this.$emit("submit");
+              this.loading = false
+              this.dialogVisible = false
+              this.$emit('submit')
             })
             .catch(err => {
               Message({
                 message: err,
-                type: "error",
-                duration: 2*1000,
-              }), 
-              this.loading = false, 
+                type: 'error',
+                duration: 2 * 1000
+              }),
+              this.loading = false,
               this.dialogVisible = true
-            });
+            })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    close() {
-      this.dialogClose();
+    close () {
+      this.dialogClose()
     },
-    dialogClose() {
-      this.$refs["form"].resetFields();
-      this.dialogVisible = false;
+    dialogClose () {
+      this.$refs['form'].resetFields()
+      this.dialogVisible = false
     }
   }
-};
+}
 </script>
-
