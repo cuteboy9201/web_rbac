@@ -206,6 +206,7 @@
 import * as menuService from "@/api/sys/menu";
 import editForm from "./batchEditForm";
 import relateInterfaceForm from "./relateInterfaceForm";
+import { Message } from 'element-ui';
 export default {
   name: "MenuPage",
   components: { editForm, relateInterfaceForm },
@@ -264,6 +265,12 @@ export default {
           isLock: data.isLock
         };
         this.currentId = id;
+      }).catch(err =>{
+        Message({
+          message: err, 
+          type: "error",
+          duration: 2*1000
+        })
       });
     },
     add() {

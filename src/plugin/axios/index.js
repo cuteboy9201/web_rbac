@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-12 17:52:48
+ * @LastEditTime: 2019-11-14 15:38:53
  * @LastEditors: Please set LastEditors
  */
 import store from '@/store'
@@ -95,37 +95,44 @@ service.interceptors.response.use(
           return Promise.reject(res.msg)
         default:
           errorCreate(`${response.config.url}`)
-          break
+          return res;
       }
     }
   },
   error => {
-    console.log(error)
     loading.hide(error.config)
-    if (error.response && error.response.status === 401) {
-      util.cookies.remove()
-      if (error.config.url.indexOf("logout") === -1) {
-        Message({
-          message: '登陆信息已过期,请重新登陆!',
-          type: 'error',
-          duration: 3 * 1000
-        })
+    if (error && error.response){
+      switch(error.response.status) {
+        case 400:
+        case 401:  
+          util.cookies.remove('token')
+          util.cookies.remove('uuid')
+          if (error.config.url.indexOf("logout") === -1) {
+            Message({
+              message: '登陆信息已过期,请重新登陆!',
+              type: 'error',
+              duration: 3 * 1000
+            })
+          };
+          router.push({
+            name: "login"
+          });
+          break    
+        case 403: error.message = '拒绝访问'; break
+        case 404: error.message = `请求地址出错: ${error.response.config.url}`; break
+        case 408: error.message = '请求超时'; break
+        case 500: error.message = '服务器内部错误'; break
+        case 501: error.message = '服务未实现'; break
+        case 502: error.message = '网关错误'; break
+        case 503: error.message = '服务不可用'; break
+        case 504: error.message = '网关超时'; break
+        case 505: error.message = 'HTTP版本不受支持'; break
+        default: break        
       }
-      setTimeout(() => {
-        // location.reload()
-        router.push({
-          name: "login"
-        });
-      }, 1000)
-    } else if (error.response && error.response.status === 500) {
-      errorLog(new Error(`系统错误!: ${error.config.url}`))
-    } else if (error.message && error.message.indexOf("timeout") > -1) {
-      errorLog(new Error(`网络超时!: ${error.config.url}`))
-    } else if (error.type === "403") {
-      errorLog(new Error(`没有请求权限!: ${error.config.url}`))
-    } else {
-      errorLog(new Error(`网络错误!: ${error.config.url}`))
     }
+    // if (error.message) {
+    //   errorLog(error);
+    // }
     return Promise.reject(error)
   }
 )

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-08-30 17:53:14
+ * @LastEditTime: 2019-11-14 11:35:01
  * @LastEditors: Please set LastEditors
  */
 import request from '@/plugin/axios'
@@ -24,6 +24,7 @@ export function getMenuList() {
         }
     })
 }
+
 export function getMenu(id) {
     return request({
         url: '/rbac/menu/' + id,
