@@ -61,7 +61,7 @@
 
         </el-table>
         <div slot="footer">
-            <el-pagination :current-page="page.current" :page-size="page.size" :total="page.total" :page-sizes="[1,100, 200, 300, 400]" layout="total, sizes, prev, pager, next, jumper" style="margin: -10px;" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+            <el-pagination :current-page="page.current" :page-size="page.size" :total="page.total" :page-sizes="[10,20, 50, 100, 200]" layout="total, sizes, prev, pager, next, jumper" style="margin: -10px;" @size-change="handleSizeChange" @current-change="handleCurrentChange">
             </el-pagination>
         </div>
     </el-dialog>

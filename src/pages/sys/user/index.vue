@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-09-16 16:40:28
+ * @LastEditTime: 2019-11-14 15:59:18
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -170,7 +170,7 @@
         :current-page="page.current"
         :page-size="page.size"
         :total="page.total"
-        :page-sizes="[1,100, 200, 300, 400]"
+        :page-sizes="[10,20, 50, 100, 200]"
         layout="total, sizes, prev, pager, next, jumper"
         style="margin: -10px;"
         @size-change="handleSizeChange"
