@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-08-29 16:50:46
+ * @LastEditTime: 2019-11-14 16:10:59
  * @LastEditors: Please set LastEditors
  */
 import request from '@/plugin/axios'
@@ -19,7 +19,7 @@ export function getRouteList() {
 }
 export function getRoute(id) {
     return request({
-        url: '/rbac/route/' + id + "/",
+        url: '/rbac/route/' + id,
         method: 'get',
         loading: {
             type: 'nprogress',
@@ -47,7 +47,7 @@ export function saveRoute(data) {
 }
 export function delRoute(id) {
     return request({
-        url: '/rbac/route/' + id + '/',
+        url: '/rbac/route/' + id,
         method: 'delete',
         success: {
             type: 'message',

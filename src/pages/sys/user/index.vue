@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-14 15:59:18
+ * @LastEditTime: 2019-11-14 17:10:52
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -195,6 +195,7 @@ import * as userService from "@/api/sys/user";
 import userRole from "./userRole";
 import editForm from "./editForm";
 import rePassword from "./rePassword";
+import { Message } from 'element-ui';
 export default {
   name: "UserPage",
   components: { editForm, userRole,rePassword },
@@ -289,6 +290,13 @@ export default {
           })
           .then(() => {
             this.getTableData();
+          })
+          .catch(err => {
+            Message({
+              message: err,
+              type: "error",
+              duration: 2*1000
+            })
           });
       });
     },
@@ -297,9 +305,18 @@ export default {
         distinguishCancelAndClose: true,
         confirmButtonText: "删除",
         cancelButtonText: "取消"
-      }).then(() => {
-        userService.delUser(id).then(() => {
-          this.getTableData();
+      })
+      .then(() => {
+        userService.delUser(id)
+          .then(() => {
+            this.getTableData();
+            })
+        .catch(err => {
+            Message({
+              message: err,
+              type: "error",
+              duration: 2*1000
+            })
         });
       });
     }

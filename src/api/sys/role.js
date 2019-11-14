@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-08-29 17:08:20
+ * @LastEditTime: 2019-11-14 16:15:59
  * @LastEditors: Please set LastEditors
  */
 import request from '@/plugin/axios'
@@ -71,7 +71,7 @@ export function saveRole(data) {
 }
 export function getRolePermissions(roleId) {
     return request({
-        url: '/rbac/role/permissions/' + roleId + '/',
+        url: '/rbac/role/permissions/' + roleId,
         method: 'get',
         loading: {
             type: 'loading',
