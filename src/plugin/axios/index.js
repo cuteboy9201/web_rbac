@@ -43,7 +43,7 @@ function errorLog (err) {
 // 创建一个 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_API,
-  timeout: 20000 // 请求超时时间
+  timeout: 5 * 1000 // 请求超时时间
 })
 
 // 请求拦截器
@@ -65,7 +65,7 @@ service.interceptors.request.use(
       const token = util.cookies.get('token')
       if (token && token !== 'undefined') {
         // 让每个请求携带token-- ['Authorization']为自定义key 请根据实际情况自行修改
-        config.headers['Authorization'] = 'Bearer ' + token
+        config.headers['Authorization'] = 'SuperManager ' + token
       }
     }
     return config
@@ -127,8 +127,11 @@ service.interceptors.response.use(
         case 503: error.message = '服务不可用'; errorLog(error); break
         case 504: error.message = '网关超时'; errorLog(error); break
         case 505: error.message = 'HTTP版本不受支持'; errorLog(error); break
-        default: break
+        default: error.message = '网络不可用'; errorLog(error);break
       }
+    }
+    if(!error.response) {
+      error.message = "接口服务不可用"; errorLog(error); 
     }
     return Promise.reject(error)
   }
