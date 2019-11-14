@@ -78,6 +78,7 @@ import * as roleService from "@/api/sys/role";
 import editForm from "./editForm";
 import rolePermission from "./rolePermission";
 import roleUser from "./roleUser";
+import { Message } from 'element-ui';
 export default {
   name: "RolePage",
   components: { editForm, rolePermission, roleUser },
@@ -147,9 +148,18 @@ export default {
         confirmButtonText: "删除",
         cancelButtonText: "取消"
       }).then(() => {
-        roleService.delRole(id).then(() => {
+        roleService.delRole(id)
+        .then(() => {
           this.getTableData();
-        });
+        })
+        .catch( err => {
+            Message({
+              message: err, 
+              type: "error",
+              duration: 2*1000
+            });
+            this.getTableData();
+        })
       });
     },
     batchDel() {
@@ -164,7 +174,16 @@ export default {
           })
           .then(() => {
             this.getTableData();
-          });
+          })
+          .catch(error=>{
+            Message({
+              message: error,
+              type: "error",
+              duration: 2*1000
+            }),
+            this.getTableData();
+          })
+          ;
       });
     },
     openEditForm(role) {

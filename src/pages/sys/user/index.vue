@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-14 17:10:52
+ * @LastEditTime: 2019-11-14 17:31:05
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -296,7 +296,8 @@ export default {
               message: err,
               type: "error",
               duration: 2*1000
-            })
+            });
+            this.getTableData();
           });
       });
     },
@@ -316,7 +317,8 @@ export default {
               message: err,
               type: "error",
               duration: 2*1000
-            })
+            });
+            this.getTableData();
         });
       });
     }
