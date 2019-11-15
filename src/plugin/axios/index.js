@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-14 15:38:53
+ * @LastEditTime: 2019-11-15 11:59:37
  * @LastEditors: Please set LastEditors
  */
 import store from '@/store'
@@ -11,7 +11,7 @@ import router from '@/router/index'
 import { Message } from 'element-ui'
 import util from '@/libs/util'
 import loading from '@/libs/loading'
-import message from '@/libs/message'
+// import message from '@/libs/message'
 import permission from '@/libs/permission'
 
 function errorCreate (msg) {
@@ -83,7 +83,7 @@ service.interceptors.response.use(
     loading.hide(response.config)
     const res = response.data
     const { statusCode } = res
-    const { msg } = res
+    // const { msg } = res
     if (statusCode === undefined) {
       return res
     } else {
@@ -127,11 +127,11 @@ service.interceptors.response.use(
         case 503: error.message = '服务不可用'; errorLog(error); break
         case 504: error.message = '网关超时'; errorLog(error); break
         case 505: error.message = 'HTTP版本不受支持'; errorLog(error); break
-        default: error.message = '网络不可用'; errorLog(error);break
+        default: error.message = '网络不可用'; errorLog(error); break
       }
     }
-    if(!error.response) {
-      error.message = "接口服务不可用"; errorLog(error); 
+    if (!error.response) {
+      error.message = `接口服务不可用 ${error.response.config.url}`; errorLog(error)
     }
     return Promise.reject(error)
   }
