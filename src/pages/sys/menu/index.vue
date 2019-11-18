@@ -312,7 +312,13 @@ export default {
         menuService.getMenuList().then(data => {
           this.menuList = data
         })
-      })
+      }).catch(err =>{
+          Message({
+            message: err,
+            type: "error",
+            duration: 1*1000
+          })
+        })
     },
     reset () {
       this.menuform = {

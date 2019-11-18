@@ -68,6 +68,7 @@
 </template>
 <script>
 import * as interfaceService from '@/api/sys/interface'
+import { Message } from 'element-ui'
 export default {
   name: 'relateInterfaceForm',
   props: {
@@ -119,6 +120,17 @@ export default {
       interfaceService.getInterfacePagedList(query).then(data => {
         this.tableData = data.rows
         this.page.total = data.totalCount
+      }).catch(err => {
+        
+        Message({
+          message: err,
+          type: 'error',
+          duration: 1 * 1000
+        })
+        setTimeout(()=>{
+          this.dialogVisible = false  
+        },500)
+        
       })
     },
     handleSearchFormSubmit () {

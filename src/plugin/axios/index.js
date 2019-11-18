@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-15 11:59:37
+ * @LastEditTime: 2019-11-18 10:34:40
  * @LastEditors: Please set LastEditors
  */
 import store from '@/store'
@@ -50,10 +50,11 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     if (!permission.access(config, store)) {
-      throw {
-        type: '403',
-        config: config
-      }
+      console.log('没有权限')
+      // throw {
+      //   type: '403',
+      //   config: config
+      // }
     }
     loading.show(config)
 

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-14 10:18:20
+ * @LastEditTime: 2019-11-18 10:17:48
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -133,7 +133,7 @@ export default {
     changeImgCode () {
       var num = Math.ceil(Math.random() * 10)
       loginService.AccountCode(num).then(data => {
-        this.imgcode = "http://127.0.0.1:18080" + data.image_url;
+        this.imgcode = "http://dev.code.cn" + data.image_url;
 
         // this.imgcode = 'https://cuteeyes.8min.top' + data.image_url
         this.imgkey = data.key
