@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-09-17 15:38:48
+ * @LastEditTime: 2019-11-18 14:51:48
  * @LastEditors: Please set LastEditors
  */
 // polyfill
@@ -15,7 +15,7 @@ import store from '@/store/index'
 // 模拟数据
 // import '@/mock'
 // 多国语
-import i18n from './i18n'
+// import i18n from './i18n'
 // 核心插件
 import d2Admin from '@/plugin/d2admin'
 import pluginExport from '@d2-projects/vue-table-export'
@@ -28,7 +28,7 @@ Vue.use(pluginExport)
 new Vue({
   router,
   store,
-  i18n,
+  // i18n,
   render: h => h(App),
   created () {
 

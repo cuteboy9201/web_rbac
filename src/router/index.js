@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-09-05 15:52:05
+ * @LastEditTime: 2019-11-18 14:05:04
  * @LastEditors: Please set LastEditors
  */
 import Vue from 'vue'
@@ -38,7 +38,8 @@ const router = new VueRouter({
   routes
 })
 
-let permissionMenu, permissionRouter = []
+let permissionMenu = []
+let permissionRouter = []
 
 let permission = {
   functions: [],

@@ -1,10 +1,3 @@
-<!--
- * @Description: In User Settings Edit
- * @Author: your name
- * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-09-04 15:53:29
- * @LastEditors: Please set LastEditors
- -->
 <template>
   <d2-container class="page">
 
@@ -12,11 +5,6 @@
 
   </d2-container>
 </template>
-
-<script>
-
-</script>
-
 <style lang="scss" scoped>
 @import '~@/assets/style/public.scss';
 .page {
