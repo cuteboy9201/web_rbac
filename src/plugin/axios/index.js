@@ -92,7 +92,7 @@ service.interceptors.response.use(
         case 200:
           return res.data
         case 500:
-          errorCreate(`[code: 500] ${response.config.url}`)
+          // errorCreate(`[code: 500] ${response.config.url}`)
           return Promise.reject(res.msg)
         default:
           errorCreate(`${response.config.url}`)
