@@ -299,6 +299,12 @@ export default {
         menuService.delMenu(this.currentId).then(() => {
           this.currentId = 0
           this.getMenuList()
+        }).catch(err=>{
+          Message({
+            message: err,
+            type: "error",
+            duration: 1*1000
+          })
         })
       })
     },
