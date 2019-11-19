@@ -79,6 +79,7 @@
 import * as routeService from '@/api/sys/route'
 import * as menuService from '@/api/sys/menu'
 import editForm from './batchEditForm'
+import { Message } from "element-ui"
 export default {
   name: 'RoutePage',
   components: { editForm },
@@ -178,6 +179,12 @@ export default {
       routeService.saveRoute(this.form).then(() => {
         routeService.getRouteList().then(data => {
           this.list = data
+        })
+      }).cacth(err=>{
+        Message({
+          messase: err,
+          type: "error",
+          duration: 1 * 1000
         })
       })
     },
