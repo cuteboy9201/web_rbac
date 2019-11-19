@@ -14,7 +14,8 @@ let componentMaps = {
   'route': () => import(/* webpackChunkName: "route" */'@/pages/sys/route'),
   'role': () => import(/* webpackChunkName: "role" */'@/pages/sys/role'),
   'user': () => import(/* webpackChunkName: "user" */'@/pages/sys/user'),
-  'interface': () => import(/* webpackChunkName: "interface" */'@/pages/sys/interface')
+  'interface': () => import(/* webpackChunkName: "interface" */'@/pages/sys/interface'),
+  'property_adminuser': () => import(/* webpackChunkName: "property_adminuser" */'@/pages/cmdb/adminuser')
 }
 files.keys().forEach((key) => {
   if (key === './index.js') return

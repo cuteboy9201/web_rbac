@@ -1,0 +1,107 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-11-19 11:39:06
+ * @LastEditTime: 2019-11-19 15:04:48
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /RBAC/src/pages/cmdb/adminuser/editForm.vue
+ -->
+<template>
+  <el-dialog width="500px" title="资产管理信息" :visible.sync="dialogVisible" @opened="dialogOpen">
+    <el-form ref="form" :model="form" label-width="80px" size="small">
+      <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '不能为空'}]">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <el-form-item prop="sshUser" label="用户" :rules="[{ required: true, message: '不能为空'}]">
+        <el-input v-model="form.sshUser"></el-input>
+      </el-form-item>
+      <el-form-item prop="sshPass" label="密码">
+        <el-input v-model="form.sshPass"></el-input>
+      </el-form-item>
+      <el-form-item prop="sudoPass" label="sudo密码">
+        <el-input v-model="form.sudoPass"></el-input>
+      </el-form-item>
+      <el-form-item prop="sshKey" label="密钥">
+        <el-input type="textarea" v-model="form.sshKey" ></el-input>
+      </el-form-item>
+      <el-form-item prop="desc" label="描述">
+        <el-input type="textarea" v-model="form.desc"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" :loading="loading" @click="save">保存</el-button>
+        <el-button @click="close">取消</el-button>
+      </el-form-item>
+    </el-form>
+
+  </el-dialog>
+
+</template>
+<script>
+import * as propertyService from '@/api/cmdb/property'
+import { Message } from 'element-ui'
+export default {
+  name: 'interfaceEditForm',
+  props: {
+    entity: Object,
+    value: Boolean
+  },
+  data () {
+    return {
+      loading: false,
+      dialogVisible: false,
+      form: {}
+    }
+  },
+  watch: {
+    value (val) {
+      this.dialogVisible = val
+    },
+    dialogVisible (val) {
+      this.$emit('input', val)
+    }
+  },
+  methods: {
+    dialogOpen () {
+      this.$refs.form.resetFields()
+      if (this.entity.id) {
+        propertyService.getInfoById(this.entity.id).then(data => {
+          let form = {}
+          form.name = data.name;
+          form.sshUser = data.sshUser;
+          form.sshPass = data.sshPass;
+          form.sudoPass = data.sudoPass;
+          form.sshKey=data.sshKey;
+          form.desc=data.desc;
+          this.form = form;
+        })
+      } else {
+        this.form = {}
+      }
+    },
+    save () {
+      this.$refs['form'].validate(valid => {
+        if (valid) {
+          this.loading = true
+          propertyService
+            .save({ ...this.form, id: this.entity.id })
+            .then(data => {
+              this.loading = false
+              this.dialogVisible = false
+              this.$emit('submit')
+            })
+            .catch(() => {
+              this.loading = false
+              this.dialogVisible = true
+            })
+        } else {
+          return false
+        }
+      })
+    },
+    close () {
+      this.$refs['form'].resetFields()
+      this.dialogVisible = false
+    }
+  }
+}
+</script>
