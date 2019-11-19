@@ -180,9 +180,10 @@ export default {
         routeService.getRouteList().then(data => {
           this.list = data
         })
-      }).cacth(err=>{
+      }).catch(err=>{
+        console.log(err)
         Message({
-          messase: err,
+          message: err,
           type: "error",
           duration: 1 * 1000
         })
