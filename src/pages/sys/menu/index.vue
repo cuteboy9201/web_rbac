@@ -121,7 +121,7 @@
               >
                 <el-option
                   v-for="item in typeOptions"
-                  :key="item.velue"
+                  :key="item.value"
                   :label="item.label"
                   :value="item.value"
                 ></el-option>

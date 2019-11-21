@@ -88,8 +88,9 @@
   </d2-container>
 </template>
 <script>
-import * as propertyService from '@/api/cmdb/property'
+import * as adminuserService from '@/api/cmdb/adminuser'
 import editForm from './editForm'
+import { Message } from 'element-ui' 
 export default {
   name: 'PropertyPages',
   components: { editForm },
@@ -126,7 +127,7 @@ export default {
         descending: this.sort.order === 'descending',
         ...this.searchForm
       }
-      propertyService.getProperthPageList(query).then(data => {
+      adminuserService.getAdminUserPageList(query).then(data => {
         this.tableData = data.rows
         this.page.total = data.totalCount
       })
@@ -167,7 +168,7 @@ export default {
         confirmButtonText: '删除',
         cancelButtonText: '取消'
       }).then(() => {
-        propertyService
+        adminuserService
           .delids({
             ids: JSON.stringify(this.multipleSelection.map(s => s.id))
           })
@@ -182,8 +183,14 @@ export default {
         confirmButtonText: '删除',
         cancelButtonText: '取消'
       }).then(() => {
-        propertyService.del(id).then(() => {
+        adminuserService.del(id).then(() => {
           this.getTableData()
+        }).catch(err=>{
+          Message({
+            message: err,
+            type: "error",
+            duration: 1*1000
+          })
         })
       })
     }

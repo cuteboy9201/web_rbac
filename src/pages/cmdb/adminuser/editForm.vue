@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2019-11-19 11:39:06
- * @LastEditTime: 2019-11-19 15:04:48
+ * @LastEditTime: 2019-11-20 18:11:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /RBAC/src/pages/cmdb/adminuser/editForm.vue
@@ -15,16 +15,21 @@
       <el-form-item prop="sshUser" label="用户" :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.sshUser"></el-input>
       </el-form-item>
-      <el-form-item prop="sshPass" label="密码">
+      <el-form-item prop="authType" label="认证方式"  :rules="[{ required: true, message: '不能为空'}]">
+        <el-select class='filter-item' v-model="form.authType" placeholder="请选择认证方式">
+          <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if='form.authType===1' prop="sshPass" label="密码"  :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.sshPass"></el-input>
+      </el-form-item>
+      <el-form-item v-if='form.authType===2' prop="sshKey" label="密钥"  :rules="[{ required: true, message: '不能为空'}]">
+        <el-input type="textarea" v-model="form.sshKey" ></el-input>
       </el-form-item>
       <el-form-item prop="sudoPass" label="sudo密码">
         <el-input v-model="form.sudoPass"></el-input>
       </el-form-item>
-      <el-form-item prop="sshKey" label="密钥">
-        <el-input type="textarea" v-model="form.sshKey" ></el-input>
-      </el-form-item>
-      <el-form-item prop="desc" label="描述">
+      <el-form-item prop="desc" label="描述"  :rules="[{ required: true, message: '不能为空'}]">
         <el-input type="textarea" v-model="form.desc"></el-input>
       </el-form-item>
       <el-form-item>
@@ -37,7 +42,7 @@
 
 </template>
 <script>
-import * as propertyService from '@/api/cmdb/property'
+import * as adminuserService from '@/api/cmdb/adminuser'
 import { Message } from 'element-ui'
 export default {
   name: 'interfaceEditForm',
@@ -49,7 +54,17 @@ export default {
     return {
       loading: false,
       dialogVisible: false,
-      form: {}
+      form: {},
+      typeOptions: [
+        {
+          value: 1,
+          label: '密码'
+        },
+        { 
+          value: 2,
+          label: '密钥'
+         }
+      ]
     }
   },
   watch: {
@@ -64,7 +79,7 @@ export default {
     dialogOpen () {
       this.$refs.form.resetFields()
       if (this.entity.id) {
-        propertyService.getInfoById(this.entity.id).then(data => {
+        adminuserService.getInfoById(this.entity.id).then(data => {
           let form = {}
           form.name = data.name;
           form.sshUser = data.sshUser;
@@ -82,14 +97,19 @@ export default {
       this.$refs['form'].validate(valid => {
         if (valid) {
           this.loading = true
-          propertyService
+          adminuserService
             .save({ ...this.form, id: this.entity.id })
             .then(data => {
               this.loading = false
               this.dialogVisible = false
               this.$emit('submit')
             })
-            .catch(() => {
+            .catch(err=> {
+              Message({
+                message: err,
+                type: "error",
+                duration: 1.5*1000
+              })
               this.loading = false
               this.dialogVisible = true
             })
