@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2019-11-20 14:07:58
- * @LastEditTime: 2019-11-21 15:00:00
+ * @LastEditTime: 2019-11-26 10:08:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /RBAC/src/api/cmdb/adminuser.js
@@ -41,7 +41,7 @@ export function del (id) {
 
 export function getInfoById (id) {
   return request({
-    url: '/cmdb/adminuser' + id,
+    url: '/cmdb/adminuser/' + id,
     method: 'get'
   })
 }
@@ -50,6 +50,21 @@ export function save (data) {
   return request({
     url: '/cmdb/adminuser/',
     method: 'post',
+    data: data,
+    success: {
+      tyep: 'message',
+      options: {
+        message: '保存成功',
+        type: 'success'
+      }
+    }
+  })
+}
+
+export function put (data) {
+  return request({
+    url: '/cmdb/adminuser/',
+    method: 'put',
     data: data,
     success: {
       tyep: 'message',

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2019-11-19 11:39:06
- * @LastEditTime: 2019-11-20 18:11:09
+ * @LastEditTime: 2019-11-26 10:08:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /RBAC/src/pages/cmdb/adminuser/editForm.vue
@@ -84,6 +84,7 @@ export default {
           form.name = data.name;
           form.sshUser = data.sshUser;
           form.sshPass = data.sshPass;
+          form.authType = data.authType;
           form.sudoPass = data.sudoPass;
           form.sshKey=data.sshKey;
           form.desc=data.desc;
@@ -97,14 +98,13 @@ export default {
       this.$refs['form'].validate(valid => {
         if (valid) {
           this.loading = true
-          adminuserService
-            .save({ ...this.form, id: this.entity.id })
-            .then(data => {
+          if (this.entity.id){
+            // 当存在entity.id的时候 提交是put为修改信息
+          adminuserService.put({ ...this.form, id: this.entity.id }).then(data => {
               this.loading = false
               this.dialogVisible = false
               this.$emit('submit')
-            })
-            .catch(err=> {
+            }).catch(err=> {
               Message({
                 message: err,
                 type: "error",
@@ -113,6 +113,22 @@ export default {
               this.loading = false
               this.dialogVisible = true
             })
+          } else{
+            //否则就是新添加信息
+            adminuserService.save({ ...this.form}).then(data => {
+                this.loading = false
+                this.dialogVisible = false
+                this.$emit('submit')
+              }).catch(err=> {
+                Message({
+                  message: err,
+                  type: "error",
+                  duration: 1.5*1000
+                })
+                this.loading = false
+                this.dialogVisible = true
+              })           
+          }
         } else {
           return false
         }
