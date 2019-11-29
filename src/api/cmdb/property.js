@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2019-11-19 14:37:12
- * @LastEditTime: 2019-11-20 14:31:03
+ * @LastEditTime: 2019-11-27 16:46:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /RBAC/src/api/cmdb/property.js
  */
 import request from '@/plugin/axios'
 
-export function getProperthPageList (query) {
+export function getPageInfo (query) {
   return request({
     url: '/cmdb/property/',
     method: 'get',
@@ -58,5 +58,20 @@ export function save (data) {
         type: 'success'
       }
     }
+  })
+}
+
+export function getSelect () {
+  return request({
+    url: '/cmdb/auth/select',
+    method: 'get'
+  })
+}
+
+export function put (data) {
+  return request({
+    url: '/cmdb/property/' + data.id,
+    method: 'put',
+    data: data
   })
 }

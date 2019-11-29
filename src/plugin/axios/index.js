@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-11 12:02:24
- * @LastEditTime: 2019-11-18 10:34:40
+ * @LastEditTime: 2019-11-27 15:21:07
  * @LastEditors: Please set LastEditors
  */
 import store from '@/store'
@@ -74,7 +74,7 @@ service.interceptors.request.use(
   error => {
     // 发送失败
     console.log(error)
-    Promise.reject(error)
+    // Promise.reject(error)
   }
 )
 
@@ -120,7 +120,8 @@ service.interceptors.response.use(
           })
           break
         case 403: error.message = '拒绝访问'; errorLog(error); break
-        case 404: error.message = `请求地址出错: ${error.response.config.url}`; errorLog(error); break
+        case 404: error.message = `请求地址出错: ${error.response.config.url}`; console.log(error); break
+        case 405: error.message = `非法请求: ${error.response.config.url}`; console.log(error); break
         case 408: error.message = '请求超时'; errorLog(error); break
         case 500: error.message = '服务器内部错误'; errorLog(error); break
         case 501: error.message = '服务未实现'; errorLog(error); break
@@ -134,7 +135,7 @@ service.interceptors.response.use(
     if (!error.response) {
       error.message = `接口服务不可用 ${error.response.config.url}`; errorLog(error)
     }
-    return Promise.reject(error)
+    return Promise.reject(error.message)
   }
 )
 
