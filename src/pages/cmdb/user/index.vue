@@ -33,12 +33,10 @@
       icon="el-icon-delete"
       @click="batchDel"
     >删除</el-button>
-    <!-- <el-popover placement="top-start" title="温馨提示" width="400" trigger="hover">
+    <el-popover placement="top-start" title="温馨提示" width="400" trigger="hover">
       <li>`路径`与`方法`组合必须唯一</li>
-      <el-button slot="reference" size="mini" icon="el-icon-info" style="float:right">
-        操作提示
-      </el-button>
-    </el-popover>-->
+      <el-button slot="reference" size="mini" icon="el-icon-info" style="float:right">操作提示</el-button>
+    </el-popover>
     <el-table
       :data="tableData"
       v-loading="loading"
@@ -50,78 +48,33 @@
       @sort-change="handleSortChange"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="资产名称" prop="name" sortable="custom">
-        <template slot-scope="scope">{{scope.row.name}}</template>
-      </el-table-column>
-      <el-table-column label="管理地址" prop="connectHost" :show-overflow-tooltip="true">
-        <template slot-scope="scope">{{scope.row.connectHost}}</template>
-      </el-table-column>
-      <el-table-column label="管理端口" prop="connectPort" :show-overflow-tooltip="true">
-        <template slot-scope="scope">{{scope.row.connectPort}}</template>
-      </el-table-column>
-      <el-table-column label="资产环境" prop="env" :show-overflow-tooltip="true">
-        <template slot-scope="scope">{{scope.row.env}}</template>
-      </el-table-column>
-      <el-table-column label="资产hostname" prop="disActivehostnameums" :show-overflow-tooltip="true">
-        <template slot-scope="scope">{{scope.row.hostname}}</template>
-      </el-table-column>
-      <el-table-column label="资产所有地址" prop="address" :show-overflow-tooltip="true">
-        <template slot-scope="scope">{{scope.row.address}}</template>
-      </el-table-column>
 
-      <el-table-column label="基本信息" prop="sysinfo" :show-overflow-tooltip="true" align="center">
-        <template slot-scope="scope">{{scope.row.sysinfo}}</template>
+      <el-table-column label="资产信息" prop="hostInfo" sortable="custom">
+        <template slot-scope="scope">{{scope.row.hostInfo}}</template>
       </el-table-column>
-
-      <el-table-column label="硬盘信息" prop="hdinfo" :show-overflow-tooltip="true" align="center">
-        <template slot-scope="scope">{{scope.row.hdinfo}}</template>
+      <el-table-column label="系统用户" prop="authUser" :show-overflow-tooltip="true">
+        <template slot-scope="scope">{{scope.row.authUser}}</template>
       </el-table-column>
-
-      <el-table-column label="资产状态" prop="status" :show-overflow-tooltip="true" align="center">
-        <template slot-scope="scope" :value="scope.row.status">
-          <d2-icon
-            v-if="scope.row.status===1"
-            name="check-circle"
-            style="font-size: 20px; line-height: 32px; color: #67C23A;"
-            slot="active"
-          />
-          <d2-icon
-            v-if="scope.row.status===0"
-            name="times-circle"
-            style="font-size: 20px; line-height: 32px; color: #F56C6C;"
-            slot="inactive"
-          />
-        </template>
+      <el-table-column label="授权用户" prop="userInfo" :show-overflow-tooltip="true">
+        <template slot-scope="scope">{{scope.row.userInfo}}</template>
       </el-table-column>
-
-      <!-- <el-table-column label="资产管理者" prop="adminuser" :show-overflow-tooltip="true" align="center">
-        <template slot-scope="scope">
-          {{scope.row.adminuser}}
-        </template>
-      </el-table-column>-->
-
-      <el-table-column label="创建时间" prop="createTime" :show-overflow-tooltip="true" align="center">
-        <template slot-scope="scope">{{scope.row.createTime}}</template>
+      <el-table-column label="授权角色" prop="roleInfo" :show-overflow-tooltip="true">
+        <template slot-scope="scope">{{scope.row.roleInfo}}</template>
       </el-table-column>
-
-      <el-table-column label="更新时间" prop="updateTime" :show-overflow-tooltip="true" align="center">
-        <template slot-scope="scope">{{scope.row.updateTime}}</template>
-      </el-table-column>
-
-      <el-table-column label="描述" prop="desc" :show-overflow-tooltip="true" align="center">
+      <el-table-column label="描述" prop="desc" :show-overflow-tooltip="true">
         <template slot-scope="scope">{{scope.row.desc}}</template>
       </el-table-column>
 
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button
+          <!-- <el-button
             type="primary"
             title="编辑"
             size="mini"
             icon="el-icon-edit"
             circle
             @click="openEditForm(scope.row)"
-          ></el-button>
+          ></el-button>-->
           <el-button
             type="danger"
             title="删除"
@@ -149,7 +102,7 @@
   </d2-container>
 </template>
 <script>
-import * as apiService from "@/api/cmdb/property";
+import * as userrightSserver from "@/api/cmdb/userright";
 import editForm from "./editForm";
 import { Message } from "element-ui";
 export default {
@@ -188,19 +141,10 @@ export default {
         descending: this.sort.order === "descending",
         ...this.searchForm
       };
-      apiService
-        .getPageInfo(query)
-        .then(data => {
-          this.tableData = data.rows;
-          this.page.total = data.totalCount;
-        })
-        .catch(err => {
-          Message({
-            message: err,
-            type: "error",
-            duration: 1 * 1000
-          });
-        });
+      userrightSserver.getPage(query).then(data => {
+        this.tableData = data.rows;
+        this.page.total = data.totalCount;
+      });
     },
     handleSearchFormSubmit() {
       this.getTableData();
@@ -238,7 +182,7 @@ export default {
         confirmButtonText: "删除",
         cancelButtonText: "取消"
       }).then(() => {
-        apiService
+        userrightSserver
           .delids({
             ids: JSON.stringify(this.multipleSelection.map(s => s.id))
           })
@@ -253,7 +197,7 @@ export default {
         confirmButtonText: "删除",
         cancelButtonText: "取消"
       }).then(() => {
-        apiService
+        userrightSserver
           .del(id)
           .then(() => {
             this.getTableData();
