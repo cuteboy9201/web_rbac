@@ -49,7 +49,7 @@
       @selection-change="handleSelectionChange"
       @sort-change="handleSortChange"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="selection"></el-table-column>
       <el-table-column label="资产名称" prop="name" sortable="custom">
         <template slot-scope="scope">{{scope.row.name}}</template>
       </el-table-column>
@@ -112,7 +112,7 @@
         <template slot-scope="scope">{{scope.row.desc}}</template>
       </el-table-column>
 
-      <el-table-column fixed="right" label="操作" align="center">
+      <el-table-column fixed="right" width="200" label="操作" align="center">
         <template slot-scope="scope">
           <el-button
             type="primary"
@@ -121,6 +121,14 @@
             icon="el-icon-edit"
             circle
             @click="openEditForm(scope.row)"
+          ></el-button>
+          <el-button
+            type="info"
+            title="连接"
+            size="mini"
+            icon="el-icon-chat-dot-round"
+            circle
+            @click="onClick()"
           ></el-button>
           <el-button
             type="danger"
@@ -152,6 +160,7 @@
 import * as apiService from "@/api/cmdb/property";
 import editForm from "./editForm";
 import { Message } from "element-ui";
+import layoutHeaderAside from '@/layouts/header-aside';
 export default {
   name: "PropertyPages",
   components: { editForm },
@@ -173,7 +182,8 @@ export default {
         order: ""
       },
       entity: {},
-      editFormVisible: false
+      editFormVisible: false,
+
     };
   },
   mounted() {
@@ -266,6 +276,40 @@ export default {
             });
           });
       });
+    },
+
+    onClick(){
+      const route = [ 
+        {
+          path: '/devops/ssh',
+          component: layoutHeaderAside,
+          children: [
+            {
+              path: "/01",
+              name: 'websocket01',
+              meta: { auth: true, title:"websocket01", cache: true},
+              component: () => import('@/pages/cmdb/ssh/websocket_02')
+            }
+          ]
+        }
+      ]
+      this.$store.dispatch('d2admin/page/add', {
+        tag: {
+          name: "websocket01",
+          meta: { title: "测试页面"},
+        },
+        // params: {
+        //   name: "ssh" + num,
+        // },
+        // query: {
+        //   name: "ssh" + num,
+        // }
+      })
+      this.$router.addRoutes(route)
+
+      this.$router.push({
+        name: "websocket01",
+      })
     }
   }
 };
